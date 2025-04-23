@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Gemma</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-900 text-gray-100 h-screen flex flex-col">
+  <header class="text-center py-4 text-xl font-semibold border-b border-gray-700">
+    Chat con Gemma
+  </header>
+
+  <main class="flex-1 overflow-hidden">
+    <div id="chat-container" class="h-full overflow-y-auto p-4 text-lg space-y-3">
+      <div id="empty-state" class="text-center text-gray-500 mt-32">
+        Escribe algo para comenzar...
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-gray-700 p-3 bg-gray-800">
+    <div class="flex gap-2">
+      <input
+        id="user-input"
+        type="text"
+        placeholder="Tu mensaje..."
+        class="flex-1 bg-gray-700 text-white rounded px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        autocomplete="off"
+      >
+      <button
+        id="send-btn"
+        class="px-5 py-3 bg-blue-600 text-white text-lg rounded hover:bg-blue-700"
+      >
+        Enviar
+      </button>
+    </div>
+  </footer>
+
+
+
+
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chat = document.getElementById('chat-container');
+      const input = document.getElementById('user-input');
+      const sendBtn = document.getElementById('send-btn');
+      const empty = document.getElementById('empty-state');
+
+      function addMessage(role, content) {
+        if (empty) empty.style.display = 'none';
+
+        const div = document.createElement('div');
+        div.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = `max-w-xl px-4 py-3 rounded-lg ${
+          role === 'user' 
+            ? 'bg-blue-600 text-white rounded-br-none' 
+            : 'bg-gray-700 text-gray-100 rounded-bl-none'
+        }`;
+        bubble.textContent = content;
+
+        div.appendChild(bubble);
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      async function sendMessage() {
+        const question = input.value.trim();
+        if (!question) return;
+        addMessage('user', question);
+        input.value = '';
+
+        const typing = document.createElement('div');
+        typing.className = 'flex justify-start';
+        typing.innerHTML = `<div class="bg-gray-700 text-gray-300 rounded px-4 py-3 text-lg">...</div>`;
+        chat.appendChild(typing);
+        chat.scrollTop = chat.scrollHeight;
+
+        try {
+          const res = await fetch('/api/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+
+          chat.removeChild(typing);
+          const data = await res.json();
+          addMessage('assistant', data.response || 'Sin respuesta del servidor.');
+        } catch (err) {
+          chat.removeChild(typing);
+          addMessage('assistant', `Error: ${err.message}`);
+        }
+      }
+
+      sendBtn.addEventListener('click', sendMessage);
+      input.addEventListener('keypress', e => {
+        if (e.key === 'Enter') sendMessage();
+      });
+    });
+  </script>
+
+
+
+</body>
+</html>
