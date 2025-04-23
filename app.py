@@ -3,15 +3,18 @@ from flask import Flask, request, jsonify, render_template
 import os
 import google.generativeai as genai
 import traceback
-import markdown # <--- Importar Markdown
-from bs4 import BeautifulSoup # <--- Importar BeautifulSoup
+import markdown 
+from bs4 import BeautifulSoup 
 
 app = Flask(__name__)
 
-# ... (resto de tu código inicial, configuración de API Key) ...
 
 # Configurar la API Key desde variable de entorno al inicio
 API_KEY = os.getenv('GEMINI_API_KEY', "AIzaSyBlgLNetfWzsRwrSRNSE9TAoLkDDaHPEUk")
+
+
+
+
 if not API_KEY:
     print("ADVERTENCIA: La variable de entorno GEMINI_API_KEY no está configurada.")
 else:
@@ -89,13 +92,20 @@ def generate_response(pregunta):
         print("--- Fin Error Detallado ---")
         return f"Error al generar la respuesta con la API: {str(e)}"
 
-# --- Rutas de Flask (@app.route('/'), @app.route('/api/ask', methods=['POST'])) ---
-# Asegúrate de que estas rutas usen la función generate_response actualizada.
-# No necesitan cambios si ya llaman a generate_response correctamente.
+
+
+
+
 
 @app.route('/')
 def home():
     return render_template('index.html') # Asegúrate que exista este archivo
+
+
+
+
+
+
 
 @app.route('/api/ask', methods=['POST'])
 def ask_question():
