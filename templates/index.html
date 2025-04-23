@@ -102,10 +102,15 @@
 
 
         try {
+          const historial = getHistorial();  // Obtener el historial de la conversación. Asegúrate de definir esta función.
+
           const res = await fetch('/api/ask', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question })
+            body: JSON.stringify({
+              question,  // La pregunta actual
+              history: historial  // El historial de la conversación
+            })
           });
 
           chat.removeChild(typing);
@@ -115,6 +120,10 @@
           chat.removeChild(typing);
           addMessage('assistant', `Error: ${err.message}`);
         }
+
+
+
+
       }
 
 
