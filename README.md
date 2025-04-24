@@ -43,8 +43,24 @@ Sigue estos pasos para configurar el entorno de desarrollo:
     Si aún no tienes el archivo `requirements.txt`, puedes instalar las librerías necesarias directamente:
 
     ```bash
-    pip install Flask google-generativeai
+ 
+pip install Flask
+pip install google-genai
+pip install markdown beautifulsoup4
+
     ```
+
+    
+    ejecutar en local
+    
+
+```bash
+
+python app.py
+
+```
+
+
 
 4.  **Configura la API de Gemini:**
 
@@ -62,15 +78,10 @@ Sigue estos pasos para configurar el entorno de desarrollo:
 **Adicionales:**
 
 
-```bash
-pip install Flask
-pip install google-genai
-pip install markdown beautifulsoup4
-
-```
-
 
 ```bash
+
 sudo apt update
 sudo apt install build-essential python3-dev libffi-dev
+
 ```

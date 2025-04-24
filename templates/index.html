@@ -12,7 +12,7 @@
 
 <body class="bg-gray-900 text-gray-100 h-screen flex flex-col">
   <header class="text-center py-4 text-xl font-semibold border-b border-gray-700">
-    Chat con Gemma
+    Asiteten de ventas - Gemma
   </header>
 
 
@@ -78,9 +78,16 @@
         chat.scrollTop = chat.scrollHeight;
       }
 
+
+
       async function sendMessage() {
+
+        const historial = getHistorial(); // Obtener historial antes de agregar la nueva pregunta
+        //console.log(JSON.stringify(historial, null, 2)); // Mostrar historial sin la nueva pregunta
+
         const question = input.value.trim();
         if (!question) return;
+
         addMessage('user', question);
         input.value = '';
 
@@ -98,18 +105,13 @@
         chat.appendChild(typing);
         chat.scrollTop = chat.scrollHeight;
 
-
-
-
         try {
-          const historial = getHistorial();  // Obtener el historial de la conversación. Asegúrate de definir esta función.
-
           const res = await fetch('/api/ask', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              question,  // La pregunta actual
-              history: historial  // El historial de la conversación
+              question,
+              history: historial
             })
           });
 
@@ -120,10 +122,30 @@
           chat.removeChild(typing);
           addMessage('assistant', `Error: ${err.message}`);
         }
+      }
 
 
 
 
+
+
+      function getHistorial() {
+        const mensajes = Array.from(document.querySelectorAll('#chat-container > div'));
+        const partes = [];
+
+        mensajes.forEach(div => {
+          const bubble = div.querySelector('div');
+          if (!bubble) return;
+
+          const texto = bubble.textContent.trim();
+          if (div.classList.contains('justify-end')) {
+            partes.push(`Usuario: ${texto}`);
+          } else {
+            partes.push(`Asistente: ${texto}`);
+          }
+        });
+
+        return partes.join('\n');
       }
 
 
