@@ -36,17 +36,23 @@ Sigue estos pasos para configurar el entorno de desarrollo:
 
     Asegúrate de tener instalado Flask y la librería de Gemini. Puedes instalar todas las dependencias listadas en el archivo `requirements.txt` (si lo tienes) con el siguiente comando:
 
+
+
     ```bash
+    
     pip install -r requirements.txt
-    ```bash
+
+    ```
  
 
     O bien instalar las dependencias directamente
 
+
     ```bash
+
     pip install Flask
     pip install google-generativeai
-    pip install Flask-CORS
+    pip install Flask-CORS  
 
     ```
 
