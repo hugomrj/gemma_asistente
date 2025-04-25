@@ -59,6 +59,8 @@
       const sendBtn = document.getElementById('send-btn');
       const empty = document.getElementById('empty-state');
 
+
+
       function addMessage(role, content) {
         if (empty) empty.style.display = 'none';
 
@@ -71,7 +73,7 @@
             ? 'bg-blue-600 text-white rounded-br-none' 
             : 'bg-gray-700 text-gray-100 rounded-bl-none'
         }`;
-        bubble.textContent = content;
+        bubble.innerHTML = content; // 👈 Esto permite interpretar etiquetas HTML
 
         div.appendChild(bubble);
         chat.appendChild(div);
@@ -81,10 +83,7 @@
 
 
       async function sendMessage() {
-
         const historial = getHistorial(); // Obtener historial antes de agregar la nueva pregunta
-        //console.log(JSON.stringify(historial, null, 2)); // Mostrar historial sin la nueva pregunta
-
         const question = input.value.trim();
         if (!question) return;
 
@@ -117,12 +116,52 @@
 
           chat.removeChild(typing);
           const data = await res.json();
-          addMessage('assistant', data.response || 'Sin respuesta del servidor.');
+          const htmlFormatted = markdownToHTML(data.response || '');
+          addMessage('assistant', htmlFormatted);
+
         } catch (err) {
           chat.removeChild(typing);
           addMessage('assistant', `Error: ${err.message}`);
         }
       }
+
+
+
+      
+      function addMessage(role, content) {
+        if (empty) empty.style.display = 'none';
+
+        const div = document.createElement('div');
+        div.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = `max-w-xl px-4 py-3 rounded-lg ${
+          role === 'user' 
+            ? 'bg-blue-600 text-white rounded-br-none' 
+            : 'bg-gray-700 text-gray-100 rounded-bl-none'
+        }`;
+        bubble.innerHTML = content; // permite HTML
+
+        div.appendChild(bubble);
+        chat.appendChild(div);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+
+      
+
+
+      function markdownToHTML(text) {
+        return text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')       // **negrita**
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')                   // *cursiva*
+          .replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>')           // listas con * o -
+          .replace(/(<li>.*<\/li>)/gms, '<ul>$1</ul>')            // agrupar en <ul>
+          .replace(/\n{2,}/g, '</p><p>')                          // doble salto de línea = nuevo párrafo
+          .replace(/\n/g, ' ')                                    // salto simple = espacio
+          .replace(/^/, '<p>').replace(/$/, '</p>');              // envolver todo en <p>
+      }      
+
 
 
 

@@ -2,8 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import os
 import google.generativeai as genai
 import traceback
-import markdown 
-from bs4 import BeautifulSoup
+
 
 from contexto import pregunta_con_contexto 
 
@@ -11,6 +10,7 @@ app = Flask(__name__)
 
 # Clave de API para Gemini
 API_KEY = "agrega tu apikey aqui"
+
 
 # Configura la API si se proporciona una clave válida
 if not API_KEY:
@@ -21,17 +21,7 @@ else:
     except Exception as e:
         print(f"Error al configurar la API de Gemini: {e}")
 
-# Función para quitar formato Markdown y obtener texto plano
-def remove_markdown(text):
-    """Convierte Markdown a HTML y luego extrae texto plano."""
-    try:
-        html = markdown.markdown(text)
-        soup = BeautifulSoup(html, "html.parser")
-        plain_text = soup.get_text()
-        return plain_text
-    except Exception as e:
-        print(f"Error al intentar quitar Markdown: {e}")
-        return text
+
 
 # Función que genera la respuesta usando el modelo de Gemini
 def generate_response(pregunta_con_contexto: str) -> str:
@@ -64,8 +54,8 @@ def generate_response(pregunta_con_contexto: str) -> str:
             raw_text = " ".join(part.text for part in response.parts if hasattr(part, 'text'))
         else:
             return "El modelo no generó una respuesta con texto."
-        plain_response = remove_markdown(raw_text)
-        return plain_response
+        
+        return raw_text
     except Exception as e:
         print("--- Error Detallado en generate_response ---")
         traceback.print_exc()

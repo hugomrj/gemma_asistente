@@ -45,9 +45,8 @@ Sigue estos pasos para configurar el entorno de desarrollo:
     ```bash
  
 pip install Flask
-pip install google-genai
-pip install markdown beautifulsoup4
-pip Flask-CORS
+pip install google-generativeai
+pip install Flask-CORS
 
     ```
 
