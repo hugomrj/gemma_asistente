@@ -38,27 +38,25 @@ Sigue estos pasos para configurar el entorno de desarrollo:
 
     ```bash
     pip install -r requirements.txt
-    ```
-
-    Si aún no tienes el archivo `requirements.txt`, puedes instalar las librerías necesarias directamente:
-
     ```bash
  
-pip install Flask
-pip install google-generativeai
-pip install Flask-CORS
+
+    O bien instalar las dependencias directamente
+
+    ```bash
+    pip install Flask
+    pip install google-generativeai
+    pip install Flask-CORS
 
     ```
 
     
-    ejecutar en local
-    
+    ejecutar en local    
 
-```bash
+    ```bash
+    python app.py
 
-python app.py
-
-```
+    ```
 
 
 
