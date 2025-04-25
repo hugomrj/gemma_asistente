@@ -9,7 +9,7 @@ from contexto import pregunta_con_contexto
 app = Flask(__name__)
 
 # Clave de API para Gemini
-API_KEY = "AIzaSyBlgLNetfWzsRwrSRNSE9TAoLkDDaHPEUk"
+API_KEY = "Agrega tu api key"
 
 
 # Configura la API si se proporciona una clave válida
