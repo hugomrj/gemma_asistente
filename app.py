@@ -9,7 +9,7 @@ from contexto import pregunta_con_contexto
 app = Flask(__name__)
 
 # Clave de API para Gemini
-API_KEY = "agrega tu apikey aqui"
+API_KEY = "AIzaSyBlgLNetfWzsRwrSRNSE9TAoLkDDaHPEUk"
 
 
 # Configura la API si se proporciona una clave válida
@@ -94,6 +94,18 @@ def ask_question():
         print("--- Fin Error Detallado ---")
         return jsonify({'error': f'Ocurrió un error inesperado en el servidor: {str(e)}'}), 500
 
+
+
+
+
+
+
+
 # Inicia la aplicación Flask
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
+
+
+
+
